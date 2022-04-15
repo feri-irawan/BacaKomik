@@ -54,30 +54,45 @@ async function getLatestComics() {
  * @returns {array} Comics
  */
 async function getPopularComics(today = false) {
-  const $ = await getHTML()
-
-  // Mengambil semua element dengan class `.ls2` yang ada di dalam `#Komik_Hot`
-  const comicCards = $(
-    `#Komik_Hot > .perapih:nth-child(${today ? 2 : 1}) .ls12 > .ls2`
+  const $ = await getHTML(
+    !today
+      ? '/other/hot/?orderby=meta_value_num'
+      : '/other/hot/?orderby=modified'
   )
+
+  // Mengambil semua element dengan class `.bge` yang ada di dalam `.daftar`
+  const comicCards = $(`.daftar > .bge`)
 
   // Comics
   const comics = []
 
   comicCards.map((i, element) => {
     const elm = $(element)
-    const ls2v = $(elm).find('.ls2v')
-    const ls2j = $(elm).find('.ls2j')
+    const cardHeader = $(elm).find('.bgei')
+    const cardBody = $(elm).find('.kan')
 
     // Mempush comic ke dalam konstan `comics`
     comics.push({
-      title: ls2j.find('h4').text().trim(),
-      type: ls2j.find('.ls2t').html(),
-      thumb: ls2v.find('img').attr('data-src'),
-      detail: ls2v.find('a').attr('href'),
-      views: ls2v.find('.vw').text().trim(),
-      chapters: Number(ls2j.find('.ls2l').text().replace('Chapter', '').trim()),
-      lastChapter: ls2j.find('.ls2l').attr('href')
+      title: cardBody.find('h3').text().trim(),
+      type: cardHeader.find('.tpe1_inf b').text().trim(),
+      thumb: cardHeader.find('img').attr('data-src'),
+      detail: cardBody.find('a').attr('href').replace(baseURL, ''),
+      views: cardHeader.find('.vw').text().trim(),
+      chapters: parseFloat(
+        cardBody
+          .find('.new1')
+          .slice(-1)
+          .find('span:nth-child(2)')
+          .text()
+          .replace('Chapter', '')
+          .trim()
+      ),
+      lastChapter: cardBody
+        .find('.new1')
+        .slice(-1)
+        .find('a')
+        .attr('href')
+        .replace(baseURL, '')
     })
   })
 
