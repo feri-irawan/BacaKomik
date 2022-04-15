@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: cursive;
+}
+
+table {
+  @apply overflow-hidden rounded-lg my-3;
+}
+
+table tr:nth-child(odd) {
+  @apply bg-slate-500/10;
+}
+
+table tr td {
+  @apply px-2 py-1;
+}
