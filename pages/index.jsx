@@ -62,7 +62,7 @@ export default function Home() {
             populer.
           </p>
           {popularComics && (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mx-auto">
               {popularComics.map((comic, i) => (
                 <ComicCard key={i} comic={comic} />
               ))}

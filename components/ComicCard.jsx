@@ -2,7 +2,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 export default function ComicCard({ comic }) {
-  const { title, type, thumb, detail, chapters, views, lastChapter } = comic
+  const { title, description, type, thumb, detail, chapters, views, updated } =
+    comic
 
   const [src, setSrc] = useState(`/api/image?url=${thumb}`)
 
@@ -33,7 +34,10 @@ export default function ComicCard({ comic }) {
             <a>{title}</a>
           </Link>
         </h1>
-        <p className="text-slate-800/80 text-sm sm:text-base">{type}</p>
+        <p className="text-slate-800/80 text-sm sm:text-base">
+          {type} - {updated}
+        </p>
+        <p className="mt-3 mb-2 text-sm sm:text-base">{description}</p>
       </div>
       <div className="text-sm sm:text-base p-3 mt-auto flex flex-wrap justify-around items-center bg-green-500/10">
         <div className="">Chapter: {chapters}</div>

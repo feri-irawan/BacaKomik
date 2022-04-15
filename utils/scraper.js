@@ -19,28 +19,48 @@ async function getHTML(path = '') {
  * @return {array} Comic
  */
 async function getLatestComics() {
-  const $ = await getHTML()
+  const $ = await getHTML('/pustaka?orderby=date')
 
-  // Mengambil semua element dengan class `.ls4` yang ada di dalam `#Terbaru`
-  const comicCards = $('#Terbaru > .ls4w > .ls4')
+  // Mengambil semua element dengan class `.bge` yang ada di dalam `.daftar`
+  const comicCards = $(`.daftar > .bge`)
 
   // Comics
   const comics = []
 
   comicCards.map((i, element) => {
     const elm = $(element)
-    const ls4v = $(elm).find('.ls4v')
-    const ls4j = $(elm).find('.ls4j')
+    const cardHeader = $(elm).find('.bgei')
+    const cardBody = $(elm).find('.kan')
 
     // Mempush comic ke dalam konstan `comics`
     comics.push({
-      title: ls4j.find('h4').text().trim(),
-      type: ls4j.find('.ls4s').html(),
-      thumb: ls4v.find('img').attr('data-src'),
-      detail: ls4v.find('a').attr('href'),
-      views: ls4v.find('.vw').text().trim(),
-      chapters: Number(ls4j.find('.ls24').text().replace('Chapter', '').trim()),
-      lastChapter: ls4j.find('.ls24').attr('href')
+      title: cardBody.find('h3').text().trim(),
+      description: cardBody.find('p').text().split('\t').slice(1).join(''),
+      thumb: cardHeader.find('img').attr('data-src'),
+      detail: cardBody.find('a').attr('href').replace(baseURL, ''),
+      type: cardHeader.find('.tpe1_inf b').text().trim(),
+      views: cardBody
+        .find('.judul2')
+        .text()
+        .split('•')[0]
+        .replace('x', '')
+        .trim(),
+      updated: cardBody.find('.judul2').text().split('•')[1].trim(),
+      chapters: parseFloat(
+        cardBody
+          .find('.new1')
+          .slice(-1)
+          .find('span:nth-child(2)')
+          .text()
+          .replace('Chapter', '')
+          .trim()
+      ),
+      lastChapter: cardBody
+        .find('.new1')
+        .slice(-1)
+        .find('a')
+        .attr('href')
+        .replace(baseURL, '')
     })
   })
 
@@ -55,9 +75,7 @@ async function getLatestComics() {
  */
 async function getPopularComics(today = false) {
   const $ = await getHTML(
-    !today
-      ? '/other/hot/?orderby=meta_value_num'
-      : '/other/hot/?orderby=modified'
+    !today ? '/pustaka?orderby=meta_value_num' : '/pustaka?orderby=modified'
   )
 
   // Mengambil semua element dengan class `.bge` yang ada di dalam `.daftar`
@@ -74,10 +92,17 @@ async function getPopularComics(today = false) {
     // Mempush comic ke dalam konstan `comics`
     comics.push({
       title: cardBody.find('h3').text().trim(),
-      type: cardHeader.find('.tpe1_inf b').text().trim(),
+      description: cardBody.find('p').text().split('\t').slice(1).join(''),
       thumb: cardHeader.find('img').attr('data-src'),
       detail: cardBody.find('a').attr('href').replace(baseURL, ''),
-      views: cardHeader.find('.vw').text().replace('pembaca', '').trim(),
+      type: cardHeader.find('.tpe1_inf b').text().trim(),
+      views: cardBody
+        .find('.judul2')
+        .text()
+        .split('•')[0]
+        .replace('x', '')
+        .trim(),
+      updated: cardBody.find('.judul2').text().split('•')[1].trim(),
       chapters: parseFloat(
         cardBody
           .find('.new1')
