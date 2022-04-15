@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 * {
-  font-family: cursive;
+  font-family: 'Comic Neue', cursive, sans-serif;
 }
 
 table {
