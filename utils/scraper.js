@@ -77,7 +77,7 @@ async function getPopularComics(today = false) {
       type: cardHeader.find('.tpe1_inf b').text().trim(),
       thumb: cardHeader.find('img').attr('data-src'),
       detail: cardBody.find('a').attr('href').replace(baseURL, ''),
-      views: cardHeader.find('.vw').text().trim(),
+      views: cardHeader.find('.vw').text().replace('pembaca', '').trim(),
       chapters: parseFloat(
         cardBody
           .find('.new1')
