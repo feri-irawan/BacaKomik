@@ -127,11 +127,11 @@ async function getPopularComics(today = false) {
 
 /**
  * Menampilkan detail komik
- * @param {string} path path atau slug komik
+ * @param {string} html HTML (yang dihasilkan /api/details)
  * @return {object} detail komik
  */
-async function getDetailsComic(path) {
-  const $ = await getHTML(path)
+async function getDetailsComic(html) {
+  const $ = cheerio.load(html, null, false)
 
   // Base sections
   const header = $('#Judul')
@@ -211,8 +211,9 @@ async function getDetailsComic(path) {
  * @param {string} path path (chapter)
  * @returns {array} pages
  */
-async function getPagesOfComic(path) {
-  const $ = await getHTML(join('ch', path))
+async function getPagesOfComic(html) {
+  // const $ = await getHTML(join('ch', path))
+  const $ = cheerio.load(html, null, false)
 
   // Title
   const title = $('#Judul > h1').text().slice(1).trim()
