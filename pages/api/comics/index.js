@@ -1,7 +1,7 @@
 import { getLatestComics } from '../../../utils/scraper'
 
 export default async function Comics(req, res) {
-  const latest = (await getLatestComics()).slice(0, 10)
+  const latest = await getLatestComics(req.query.max_results)
 
   res.status(200).json({
     code: 200,

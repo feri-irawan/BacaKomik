@@ -16,56 +16,39 @@ async function getHTML(path = '') {
 
 /**
  * Mendapatkan komik terbaru/terakhir dipost
- * @return {array} Comic
+ * @param {number} maxResults Jumlah maximal komik yg ditampilkan (Harus 0 - 30)
+ * @return {array} Comics
  */
-async function getLatestComics() {
-  const $ = await getHTML('/pustaka?orderby=date')
+async function getLatestComics(maxResults = 30) {
+  const $ = await getHTML('/manga')
 
-  // Mengambil semua element dengan class `.bge` yang ada di dalam `.daftar`
-  const comicCards = $(`.daftar > .bge`)
+  // Mengambil semua element dengan class `.bsx` yang ada di dalam `.mrgn > .listupd >.bs`
+  const comicCards = $(`.mrgn > .listupd > .bs > .bsx`)
 
   // Comics
   const comics = []
 
   comicCards.map((i, element) => {
-    const elm = $(element)
-    const cardHeader = $(elm).find('.bgei')
-    const cardBody = $(elm).find('.kan')
+    const card = $(element)
+    const type = card.find('.type').text()
+    const title = card.find('a').attr('title')
+    const thumb = card.find('img').attr('src')
+    const details = card.find('a').attr('href').replace(baseURL, '')
+    const chapters = parseFloat(card.find('.epxs').text().replace('Ch.', ''))
+    const rating = parseFloat(card.find('.rating i').text())
 
-    // Mempush comic ke dalam konstan `comics`
     comics.push({
-      title: cardBody.find('h3').text().trim(),
-      description: cardBody.find('p').text().split('\t').slice(1).join(''),
-      thumb: cardHeader.find('img').attr('data-src'),
-      detail: cardBody.find('a').attr('href').replace(baseURL, ''),
-      type: cardHeader.find('.tpe1_inf b').text().trim(),
-      views: cardBody
-        .find('.judul2')
-        .text()
-        .split('•')[0]
-        .replace('x', '')
-        .trim(),
-      updated: cardBody.find('.judul2').text().split('•')[1].trim(),
-      chapters: parseFloat(
-        cardBody
-          .find('.new1')
-          .slice(-1)
-          .find('span:nth-child(2)')
-          .text()
-          .replace('Chapter', '')
-          .trim()
-      ),
-      lastChapter: cardBody
-        .find('.new1')
-        .slice(-1)
-        .find('a')
-        .attr('href')
-        .replace(baseURL, '')
+      type,
+      title,
+      thumb,
+      details,
+      chapters,
+      rating
     })
   })
 
   // Response
-  return comics
+  return comics.slice(0, max(maxResults))
 }
 
 /**
@@ -246,6 +229,16 @@ async function getPagesOfComic(html) {
 
   // Response
   return { title, paginations, pages }
+}
+
+/**
+ * Mengatur jumlah maksimal daftar comic
+ * @param {number} num angka yang akan divalidasi
+ * @return {number}
+ */
+function max(num) {
+  const n = parseInt(num.length === 0 ? 30 : num)
+  return typeof n !== 'number' || n.toString() === 'NaN' ? 30 : n
 }
 
 module.exports = {
