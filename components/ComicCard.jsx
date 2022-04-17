@@ -55,7 +55,10 @@ export default function ComicCard({ comic }) {
           title="Klik untuk melihat detail komik."
         >
           <Link href={`/details${details}`}>
-            <a>{title}</a>
+            <a>
+              {title.slice(0, 60)}
+              {title.length > 60 ? '...' : ''}
+            </a>
           </Link>
         </h1>
       </div>
