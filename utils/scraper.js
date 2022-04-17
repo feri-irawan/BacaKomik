@@ -35,7 +35,7 @@ async function getComics(query = {}, maxResults = 30) {
     const card = $(element)
     const type = card.find('.type').text()
     const title = card.find('a').attr('title')
-    const thumb = card.find('img').attr('src')
+    const thumb = card.find('img').attr('src').replace('225', '160')
     const details = card.find('a').attr('href').replace(baseURL, '')
     const chapters = parseFloat(card.find('.epxs').text().replace('Ch.', ''))
     const rating = parseFloat(card.find('.rating i').text())

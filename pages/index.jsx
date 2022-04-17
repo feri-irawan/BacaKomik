@@ -94,7 +94,7 @@ export default function Home() {
             Berikuut ini hasil pencarian dari <strong>{searchQuery}</strong>
           </p>
           {searchComics && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-3 mx-auto">
               {searchComics.map((comic, i) => (
                 <ComicCard key={i} comic={comic} />
               ))}
@@ -114,7 +114,7 @@ export default function Home() {
             populer.
           </p>
           {popularComics && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-3 mx-auto">
               {popularComics.map((comic, i) => (
                 <ComicCard key={i} comic={comic} />
               ))}
@@ -134,7 +134,7 @@ export default function Home() {
             terakhir diperbarui
           </p>
           {updateComics && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-3 mx-auto">
               {updateComics.map((comic, i) => (
                 <ComicCard key={i} comic={comic} />
               ))}
@@ -153,7 +153,7 @@ export default function Home() {
             Berikut ini {newComics ? newComics.length : 0} komik terbaru.
           </p>
           {newComics && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-3 mx-auto">
               {newComics.map((comic, i) => (
                 <ComicCard key={i} comic={comic} />
               ))}

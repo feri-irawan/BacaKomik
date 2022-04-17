@@ -51,7 +51,7 @@ export default function ComicCard({ comic }) {
       </Link>
       <div className="p-3">
         <h1
-          className="text-md sm:text-lg font-bold text-green-500 hover:text-green-600"
+          className="text-sm sm:text-mb font-bold text-green-500 hover:text-green-600"
           title="Klik untuk melihat detail komik."
         >
           <Link href={`/details${details}`}>
@@ -62,9 +62,9 @@ export default function ComicCard({ comic }) {
           </Link>
         </h1>
       </div>
-      <div className="text-sm sm:text-base p-3 mt-auto flex flex-wrap justify-around items-center bg-green-500/10">
-        <div className="">Chapter: {chapters}</div>
-        <div className="">Rating: {rating}</div>
+      <div className="text-sm p-3 mt-auto flex flex-wrap justify-around items-center bg-green-500/10">
+        <div className="mx-2">Chapter: {chapters}</div>
+        <div className="mx-2">Rating: {rating}</div>
       </div>
     </article>
   )
