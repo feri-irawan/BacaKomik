@@ -110,78 +110,72 @@ async function getPopularComics(today = false) {
 
 /**
  * Menampilkan detail komik
- * @param {string} html HTML (yang dihasilkan /api/details)
+ * @param {string} path path komik (misal: `/[type]/[slug]`)
  * @return {object} detail komik
  */
-async function getDetailsComic(html) {
-  const $ = cheerio.load(html, null, false)
+async function getDetailsComic(path) {
+  const $ = await getHTML(path)
 
-  // Base sections
-  const header = $('#Judul')
-  const info = $('#Informasi')
-  const sinopsis = $('#Sinopsis')
+  // Info komik
+  const info = $('.bigcontent')
 
-  // Push chapters
-  const chapters = []
-  $('#Daftar_Chapter')
-    .find('tr')
-    .slice(1)
-    .map((i, element) => {
-      const tr = $(element)
-      const chapter = tr
-        .find('td:nth-child(1)')
-        .text()
-        .split('\t')
-        .join('')
-        .slice(2, -1)
-        .replace('Chapter', '')
-        .trim()
-
-      const updated = tr
-        .find('td:nth-child(2)')
-        .text()
-        .split('\t')
-        .join('')
-        .slice(1)
-      const path = tr.find('td:nth-child(1) a').attr('href')
-
-      chapters.push({
-        chapter,
-        updated,
-        path
-      })
-    })
-
-  // Genre
-  const genre = []
-  info.find('ul.genre li.genre').map((i, element) => {
-    const li = $(element).text()
-    genre.push(li)
+  // Genres
+  const genres = []
+  info.find('.spe span:nth-child(1) a').map((i, element) => {
+    const genre = $(element).text()
+    genres.push(genre)
   })
 
-  // Spesific sections
+  //  Chapters
+  const chapters = []
+  $('.bixbox.bxcl > ul > li').map((i, element) => {
+    const chapter = $(element).find('.lchx a')
+    chapters.push({
+      title: chapter.text(),
+      path: chapter.attr('href').replace(baseURL, '/ch')
+    })
+  })
+
+  // Info spesifik
   const details = {
-    title: {
-      en: header.find('h1').text().trim(),
-      id: header.find('.j2').text().trim()
-    },
-    description: header.find('.desc').text().trim(),
-    thumb: info.find('.ims > img').attr('src').replace('w=225', 'w=300'),
-    type: info.find('tr:nth-child(2)').find('td:nth-child(2)').text(),
-    genre,
-    concept: info.find('tr:nth-child(3)').find('td:nth-child(2)').text(),
-    author: info.find('tr:nth-child(4)').find('td:nth-child(2)').text(),
-    status: info.find('tr:nth-child(5)').find('td:nth-child(2)').text(),
-    readerAge: info.find('tr:nth-child(6)').find('td:nth-child(2)').text(),
-    views: info.find('tr:nth-child(7)').find('td:nth-child(2)').text(),
-    howToRead: info.find('tr:nth-child(8)').find('td:nth-child(2)').text(),
-    sinopsis: sinopsis
-      .find('h2:contains("Sinopsis Lengkap")')
-      .next()
+    title: info.find('.thumb img').attr('alt'),
+    thumb: info.find('.thumb img').attr('src'),
+    description: info.find('span.desc p').text(),
+    genres,
+    status: info.find('.spe span:nth-child(2)').text().split(' ')[1],
+    released: info.find('.spe span:nth-child(3)').text().split(' ')[1],
+    author: info
+      .find('.spe span:nth-child(4)')
       .text()
-      .split('\t')
-      .join('')
-      .slice(1),
+      .split(' ')
+      .slice(1)
+      .join(' '),
+    type: info.find('.spe span:nth-child(5)').text().split(' ')[1],
+    serialization: info
+      .find('.spe span:nth-child(6)')
+      .text()
+      .split(' ')
+      .slice(1)
+      .join(' '),
+    postedBy: info
+      .find('.spe span:nth-child(7)')
+      .text()
+      .split(' ')
+      .slice(2)
+      .join(' '),
+    postedOn: info
+      .find('.spe span:nth-child(8)')
+      .text()
+      .split(' ')
+      .slice(2)
+      .join(' '),
+    updatedOn: info
+      .find('.spe span:nth-child(9)')
+      .text()
+      .split(' ')
+      .slice(2)
+      .join(' '),
+    rating: parseFloat($('.rating strong').text().split(' ')[1]),
     chapters
   }
 
