@@ -44,7 +44,7 @@ export default function Details() {
 
   return (
     <Layouts title={title}>
-      <div className="grid grid-cols-2 gap-3 mb-3">
+      <div className="grid sm:grid-cols-2 gap-3 mb-3">
         <div>
           <div className="relative overflow-hidden rounded-lg flex justify-center items-center mt-3">
             <img
@@ -58,7 +58,7 @@ export default function Details() {
           </div>
         </div>
         <div>
-          <table className="w-full">
+          <table className="w-full sticky top-3">
             <tr>
               <td>Jenis Komik</td>
               <td>{type}</td>
