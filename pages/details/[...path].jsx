@@ -44,63 +44,71 @@ export default function Details() {
 
   return (
     <Layouts title={title}>
-      <div className="grid md:grid-cols-2 gap-3 mb-3">
-        <div className="relative overflow-hidden rounded-lg flex justify-center items-center">
-          <img src={`/api/image?url=${thumb}`} alt={title} className="w-full" />
-          <div className="absolute inset-x-0 bottom-0 bg-green-500 text-white p-3">
-            <h1 className="text-xl font-bold">{title}</h1>
+      <div className="grid grid-cols-2 gap-3 mb-3">
+        <div>
+          <div className="relative overflow-hidden rounded-lg flex justify-center items-center mt-3">
+            <img
+              src={`/api/image?url=${thumb}`}
+              alt={title}
+              className="w-full"
+            />
+            <div className="absolute inset-x-0 bottom-0 bg-green-500 text-white p-3">
+              <h1 className="text-xl font-bold">{title}</h1>
+            </div>
           </div>
         </div>
-
-        <table className="w-full">
-          <tr>
-            <td>Jenis Komik</td>
-            <td>{type}</td>
-          </tr>
-          <tr>
-            <td>Rilis</td>
-            <td>{released}</td>
-          </tr>
-          <tr>
-            <td>Serial</td>
-            <td>{serialization}</td>
-          </tr>
-          <tr>
-            <td>Penulis</td>
-            <td>{author}</td>
-          </tr>
-          <tr>
-            <td>Status</td>
-            <td>{status}</td>
-          </tr>
-          <tr>
-            <td>Rating</td>
-            <td>{rating}</td>
-          </tr>
-          <tr>
-            <td>Diposting oleh</td>
-            <td>{postedBy}</td>
-          </tr>
-          <tr>
-            <td>Diposting pada</td>
-            <td>{postedOn}</td>
-          </tr>
-          <tr>
-            <td>Diperbarui pada</td>
-            <td>{updatedOn}</td>
-          </tr>
-          <tr>
-            <td>Genre</td>
-            <td>
-              {genres.map((g, i) => (
-                <a className="px-2 py-0 bg-green-500/10 text-green-500 rounded-md inline-block m-0.5 border border-transparent hover:border-green-500 duration-300">
-                  {g}
-                </a>
-              ))}
-            </td>
-          </tr>
-        </table>
+        <div>
+          <table className="w-full">
+            <tr>
+              <td>Jenis Komik</td>
+              <td>{type}</td>
+            </tr>
+            <tr>
+              <td>Rilis</td>
+              <td>{released}</td>
+            </tr>
+            <tr>
+              <td>Serial</td>
+              <td>{serialization}</td>
+            </tr>
+            <tr>
+              <td>Penulis</td>
+              <td>{author}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{status}</td>
+            </tr>
+            <tr>
+              <td>Rating</td>
+              <td>{rating}</td>
+            </tr>
+            <tr>
+              <td>Diposting oleh</td>
+              <td>{postedBy}</td>
+            </tr>
+            <tr>
+              <td>Diposting pada</td>
+              <td>{postedOn}</td>
+            </tr>
+            <tr>
+              <td>Diperbarui pada</td>
+              <td>{updatedOn}</td>
+            </tr>
+          </table>
+        </div>
       </div>
+
+      <h2 className="text-xl font-bold text-green-500">Genre</h2>
+      <p className="mb-3">
+        {genres.map((g, i) => (
+          <a className="px-2 py-0 bg-green-500/10 text-green-500 rounded-md inline-block m-0.5 border border-transparent hover:border-green-500 duration-300">
+            {g}
+          </a>
+        ))}
+      </p>
+
+      <h2 className="text-xl font-bold text-green-500">Deskripsi</h2>
       <p className="bg-green-500/30 p-3 rounded-lg my-3">{description}</p>
 
       <h2 className="text-xl font-bold text-green-500">Chapters</h2>
