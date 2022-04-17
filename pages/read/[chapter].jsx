@@ -18,10 +18,12 @@ export default function Read() {
 
   // Mendapatkan data
   useEffect(() => {
-    if (chapter)
-      fetch(join('/api/ch', chapter))
+    if (chapter) {
+      setData(null)
+      fetch(join('/api/read', chapter))
         .then((res) => res.json())
         .then((res) => setData(res))
+    }
   }, [chapter])
 
   // Jika belum ada data
@@ -33,7 +35,7 @@ export default function Read() {
     )
 
   // Jika sudah ada data
-  const { title, paginations, pages } = data
+  const { title, pagination, pages } = data
 
   return (
     <Layouts title="">
@@ -41,35 +43,34 @@ export default function Read() {
         <h1 className="text-xl text-green-500 font-bold">{title}</h1>
       </div>
 
-      <div className="my-3 overflow-hidden rounded-lg shadow-lg max-w-max mx-auto">
+      <div className="my-3 overflow-hidden rounded-lg shadow-lg w-full md:max-w-3xl mx-auto">
         {pages.map((page, i) => (
           <ComicPage page={{ i: i++, page }} />
         ))}
       </div>
 
-      <div
-        className={`sticky inset-x-0 bottom-0 bg-green-100 rounded-t-lg p-2 ${
-          paginations.length > 1 ? 'grid grid-cols-2' : 'text-center'
-        }`}
-      >
+      <div className="sticky inset-x-0 bottom-0 bg-green-100 rounded-t-lg p-2 grid grid-cols-2">
         <div>
-          <Link href={paginations[0].path}>
-            <a className="inline-block px-3 py-2 bg-green-500/30 rounded-lg hover:ring ring-green-500/60 duration-300">
-              <ChevronDoubleLeftIcon className="w-4 inline-block mr-1" />
-              {paginations[0].title}
-            </a>
-          </Link>
-        </div>
-        {paginations.length > 1 && (
-          <div className="text-right">
-            <Link href={paginations[1].path}>
+          {pagination.prev && (
+            <Link href={pagination.prev}>
               <a className="inline-block px-3 py-2 bg-green-500/30 rounded-lg hover:ring ring-green-500/60 duration-300">
-                {paginations[1].title}{' '}
+                <ChevronDoubleLeftIcon className="w-4 inline-block mr-1" />{' '}
+                Sebelumnya
+              </a>
+            </Link>
+          )}
+        </div>
+
+        <div className="text-right">
+          {pagination.next && (
+            <Link href={pagination.next}>
+              <a className="inline-block px-3 py-2 bg-green-500/30 rounded-lg hover:ring ring-green-500/60 duration-300">
+                Selanjutnya{' '}
                 <ChevronDoubleRightIcon className="w-4 inline-block" />
               </a>
             </Link>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </Layouts>
   )

@@ -4,7 +4,7 @@ export default function ComicPage({ page }) {
   const [src, setSrc] = useState(page.page)
   return (
     <img
-      src={`/api/image?url=${src}`}
+      src={src}
       alt={`Page ${page.i + 1}`}
       className="w-full md:max-w-3xl mx-auto"
       style={{ minHeight: '300px' }}

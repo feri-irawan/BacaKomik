@@ -132,7 +132,7 @@ async function getDetailsComic(path) {
     const chapter = $(element).find('.lchx a')
     chapters.push({
       title: chapter.text(),
-      path: chapter.attr('href').replace(baseURL, '/ch')
+      path: chapter.attr('href').replace(baseURL, '/read')
     })
   })
 
@@ -185,44 +185,36 @@ async function getDetailsComic(path) {
 
 /**
  * Mendapatkan halaman/gambar comic
- * @param {string} path path (chapter)
+ * @param {string} path path komik (misal: `/read/[slug]`)
  * @returns {array} pages
  */
-async function getPagesOfComic(html) {
-  // const $ = await getHTML(join('ch', path))
-  const $ = cheerio.load(html, null, false)
+async function getPagesOfComic(path) {
+  const $ = await getHTML(path)
 
   // Title
-  const title = $('#Judul > h1').text().slice(1).trim()
+  const title = $('.headpost h1').text()
 
-  // Container halaman
-  const container = $('#Baca_Komik')
-
-  // Mendapatkan halaman (gambar komik)
+  // Pages
   const pages = []
-  container.find('img').map((i, element) => {
-    const img = $(element)
-      .attr('src')
-      .replace('cdn.komiku.co.id', 'img.komiku.id')
-    pages.push(img)
+  $('#readerarea img').map((i, element) => {
+    const image = $(element).attr('src')
+    pages.push(image)
   })
 
-  const paginations = []
-
-  $('.botmenu .nxpr')
-    .find('.rl')
-    .map((i, element) => {
-      const path = $(element).attr('href')
-      const title =
-        $(element).find('svg').attr('data-icon') === 'caret-left'
-          ? 'Sebelumnya'
-          : 'Selanjutnya'
-
-      paginations.push({ title, path })
-    })
+  // Pagination
+  const pagination = $('.nextprev')
+  const prev = pagination.find('[rel="prev"]').attr('href')
+  const next = pagination.find('[rel="next"]').attr('href')
 
   // Response
-  return { title, paginations, pages }
+  return {
+    title,
+    pagination: {
+      prev: prev ? prev.replace(baseURL, '/read') : null,
+      next: next ? next.replace(baseURL, '/read') : null
+    },
+    pages
+  }
 }
 
 /**
