@@ -15,15 +15,18 @@ async function getHTML(path = '') {
 }
 
 /**
- * Mendapatkan komik terbaru/terakhir dipost
- * @param {number} maxResults Jumlah maximal komik yg ditampilkan (Harus 0 - 30)
+ * Mendapatkan komik
+ * @param {object} query Query (ini akan dijadikan query string pada url)
+ * @param {number} maxResults Jumlah maksimal daftar komik yang dikembalikan (0 sampai 30)
  * @return {array} Comics
  */
-async function getLatestComics(maxResults = 30) {
-  const $ = await getHTML('/manga')
+async function getComics(query = {}, maxResults = 30) {
+  const q = new URLSearchParams(query)
+
+  const $ = await getHTML(!query.s ? `/manga?${q}` : `?${q}`) // Jika ada query `s` maka jangan gunakan route `/manga`
 
   // Mengambil semua element dengan class `.bsx` yang ada di dalam `.mrgn > .listupd >.bs`
-  const comicCards = $(`.mrgn > .listupd > .bs > .bsx`)
+  const comicCards = $(`.listupd > .bs > .bsx`)
 
   // Comics
   const comics = []
@@ -49,63 +52,6 @@ async function getLatestComics(maxResults = 30) {
 
   // Response
   return comics.slice(0, max(maxResults))
-}
-
-/**
- * Mendapatkan komik populer
- * @param {boolean} today menampilkan komik populer hari ini
- * @returns {array} Comics
- */
-async function getPopularComics(today = false) {
-  const $ = await getHTML(
-    !today ? '/pustaka?orderby=meta_value_num' : '/pustaka?orderby=modified'
-  )
-
-  // Mengambil semua element dengan class `.bge` yang ada di dalam `.daftar`
-  const comicCards = $(`.daftar > .bge`)
-
-  // Comics
-  const comics = []
-
-  comicCards.map((i, element) => {
-    const elm = $(element)
-    const cardHeader = $(elm).find('.bgei')
-    const cardBody = $(elm).find('.kan')
-
-    // Mempush comic ke dalam konstan `comics`
-    comics.push({
-      title: cardBody.find('h3').text().trim(),
-      description: cardBody.find('p').text().split('\t').slice(1).join(''),
-      thumb: cardHeader.find('img').attr('data-src'),
-      detail: cardBody.find('a').attr('href').replace(baseURL, ''),
-      type: cardHeader.find('.tpe1_inf b').text().trim(),
-      views: cardBody
-        .find('.judul2')
-        .text()
-        .split('•')[0]
-        .replace('x', '')
-        .trim(),
-      updated: cardBody.find('.judul2').text().split('•')[1].trim(),
-      chapters: parseFloat(
-        cardBody
-          .find('.new1')
-          .slice(-1)
-          .find('span:nth-child(2)')
-          .text()
-          .replace('Chapter', '')
-          .trim()
-      ),
-      lastChapter: cardBody
-        .find('.new1')
-        .slice(-1)
-        .find('a')
-        .attr('href')
-        .replace(baseURL, '')
-    })
-  })
-
-  // Response
-  return comics
 }
 
 /**
@@ -228,8 +174,7 @@ function max(num) {
 }
 
 module.exports = {
-  getLatestComics,
-  getPopularComics,
+  getComics,
   getDetailsComic,
   getPagesOfComic
 }
