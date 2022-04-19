@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio'
 import { join } from 'path'
+import { slugs } from '../constants/blacklist'
 import { baseURL } from '../constants/scraper'
 
 /**
@@ -51,7 +52,9 @@ async function getComics(query = {}, maxResults = 30) {
   })
 
   // Response
-  return comics.slice(0, max(maxResults))
+  return comics
+    .slice(0, max(maxResults))
+    .filter(({ details }) => !slugs.includes(details.split('/')[2]))
 }
 
 /**
