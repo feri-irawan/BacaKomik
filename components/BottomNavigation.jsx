@@ -47,7 +47,7 @@ export default function BottomNavigation() {
         {navs.map(({ title, path, icon }, i) => (
           <Link key={i} href={path}>
             <a
-              className={`p-3 text-center inline-block text-sm ${
+              className={`px-3 pt-2 pb-1 sm:p-3 text-center inline-block text-sm duration-300 ${
                 active === path ? 'bg-green-600' : ''
               }`}
             >
