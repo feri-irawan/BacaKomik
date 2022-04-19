@@ -127,7 +127,7 @@ export default function Search() {
               </div>
 
               <div className="mb-3 w-full col-span-2">
-                <div className="font-bold">Tipe:</div>
+                <div className="font-bold">Jenis:</div>
                 <div className="flex flex-wrap">
                   {types.map((v, i) => (
                     <label
@@ -167,7 +167,7 @@ export default function Search() {
               </div>
             </div>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end sticky bottom-20">
             <button
               type="submit"
               className="px-4 py-2 bg-green-500/50 rounded-lg hover:ring ring-green-500/30 duration-300"
@@ -177,7 +177,7 @@ export default function Search() {
           </div>
         </form>
 
-        <hr className="mt-3" />
+        <hr className="my-3" />
 
         <Loading message="Mencari komik..." loading={loading} />
 
