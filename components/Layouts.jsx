@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import BottomNavigation from './BottomNavigation'
 import Contents from './Contents'
 import Footer from './Footer'
 import Header from './Header'
@@ -26,6 +27,7 @@ export default function Layouts({ children, title }) {
       <Header />
       <Contents body={children} />
       <Footer />
+      <BottomNavigation />
     </div>
   )
 }
