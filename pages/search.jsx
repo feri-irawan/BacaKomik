@@ -90,7 +90,10 @@ export default function Search() {
                 <div className="font-bold">Status:</div>
                 <div className="flex flex-wrap">
                   {status.map((v, i) => (
-                    <label key={i} className="cursor-pointer inline-block mx-2">
+                    <label
+                      key={i}
+                      className="cursor-pointer inline-block mx-2 hover:text-green-500"
+                    >
                       <input
                         type="radio"
                         name="status"
@@ -107,7 +110,10 @@ export default function Search() {
                 <div className="font-bold">Urut berdasarkan:</div>
                 <div className="flex flex-wrap">
                   {orderby.map((v, i) => (
-                    <label key={i} className="cursor-pointer inline-block mx-2">
+                    <label
+                      key={i}
+                      className="cursor-pointer inline-block mx-2 hover:text-green-500"
+                    >
                       <input
                         type="radio"
                         name="order"
@@ -124,7 +130,10 @@ export default function Search() {
                 <div className="font-bold">Tipe:</div>
                 <div className="flex flex-wrap">
                   {types.map((v, i) => (
-                    <label key={i} className="cursor-pointer inline-block mx-2">
+                    <label
+                      key={i}
+                      className="cursor-pointer inline-block mx-2 hover:text-green-500"
+                    >
                       <input
                         type="radio"
                         name="type"
@@ -144,7 +153,7 @@ export default function Search() {
                 {genres.map((v, i) => (
                   <label
                     key={i}
-                    className="cursor-pointer mx-2 flex items-center"
+                    className="cursor-pointer mx-2 flex items-center hover:text-green-500"
                   >
                     <input
                       type="radio"
@@ -173,7 +182,7 @@ export default function Search() {
         <Loading message="Mencari komik..." loading={loading} />
 
         {searchComics && (
-          <div className="my-3">
+          <div className="mb-3">
             <p className="text-center mb-3">Berikut ini hasil yang ditemukan</p>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-3 mx-auto">
